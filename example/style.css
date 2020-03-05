@@ -44,6 +44,12 @@ body {
   text-decoration: none;
 }
 
+#regular-player {
+  height: 270px;
+  width: 480px;
+
+}
+
 .container {
   max-width: 1605px;
   margin: 0 auto;
