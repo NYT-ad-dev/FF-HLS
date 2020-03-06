@@ -9,6 +9,9 @@
     <link rel="stylesheet" href="style.css">
     <!-- <link href="https://vjs.zencdn.net/7.6.6/video-js.css" rel="stylesheet" /> -->
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <script src="js/metrics.js"></script>
+    <script src="js/regular-player.js"></script>
+    <!-- <script src="js/hls.js"></script> -->
 
     <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script> -->
     <!-- <script src="https://unpkg.com/video.js/dist/video.js"></script> -->
@@ -26,32 +29,28 @@
         <div id="media-container" class="media-container">
             <!-- <video controls [%Autoplay%] preload="auto" id='my-video' class='video-js' width='480' height='270' poster ='[%VideoCover%]'data-setup='{}'> <source src='[%VideoURL%]' type='video/mp4'></video> -->
             <!-- <video class="video-js vjs-theme-city" id=vid1 width=480 height=270 controls data-setup='{}'></video> -->
-            <video controls id="regular-player" src=""></video>
+            <video class='video-style' controls preload="auto" id="regular-player" autoplay playsInline muted src=""></video>
           
         </div>
 
-        <a target="_blank" href="%%CLICK_URL_UNESC%%%%DEST_URL%%">
+        <a class="non-media" target="_blank" href="%%CLICK_URL_UNESC%%%%DEST_URL%%">
             <div class="content-container">
                 <div class="content-well">
                     <div class="logo">
-                        <img onclick="eventTracker.generalEventTrack('clickURL', 'logo', '%%CLICK_URL_UNESC%%%%DEST_URL_UNESC%%')" class="logo-std" src="" />
-                        <img onclick="eventTracker.generalEventTrack('clickURL', 'logo', '%%CLICK_URL_UNESC%%%%DEST_URL_UNESC%%')" class="logo-hi-res" src="" />
+                        <img onclick="eventTracker.generalEventTrack('clickURL', 'logo', '%%CLICK_URL_UNESC%%%%DEST_URL_UNESC%%')" src="./images/logo.png" />
                     </div>
                     <div class="content-middle-well">
-                        <div id="title2" class="title">[%Headline%]</div>
-                        <div class="summary">[%Summary%]</div>
-                        <div onclick="eventTracker.generalEventTrack('clickURL', 'cta', '%%CLICK_URL_UNESC%%%%DEST_URL_UNESC%%')" class="cta">[%CTA%]</div>
-                    <div class="disclaimer">[%Disclaimer%]</div>
+                        <div id="title" class="title">An Adventure Awaits for Everyone</div>
+                        <div class="summary">Receive 10% off when you book your next vacation with us.</div>
+                        <div onclick="eventTracker.generalEventTrack('clickURL', 'cta', '%%CLICK_URL_UNESC%%%%DEST_URL_UNESC%%')" class="cta">LEARN MORE</div>
+                        <div id="disclaimer" class="disclaimer">[%Disclaimer%]</div>
                     </div>
                 </div>
             </div>
-            <div class="img-container"><img src="" /></div>
+            <div class="img-container"><img src="./images/hero.png" /></div>
         </a>
     </div>
 </div>
-
-<!-- <script src="https://vjs.zencdn.net/7.6.6/video.js"></script> -->
-
 
 <div style="display: none;">[%CustomTracking%]</div>
 <div id="impression-pixel" class="impression-tracker"><img src="" width="1" height="1" border="0" /></div>
@@ -59,158 +58,6 @@
 
 
 <script type="text/javascript">
-
-    /*Quartile Tracking Code*/
-
-    //const play = document.getElementsByClassName("vjs-play-control")[0];
-    //const vid = document.querySelector('video');
-
-
-    function initRegularVideoPlayer () {
-        var Rvideo = document.getElementById('regular-player');
-        if (Hls.isSupported()) {
-            var hls = new Hls();
-            hls.loadSource('https://vp.nyt.com/video/hls/2020/01/22/20200122164746_1_sir_listings_00114118_wg/master.m3u8');
-            hls.attachMedia(Rvideo);
-            hls.on(Hls.Events.MANIFEST_PARSED, function() {
-            Rvideo.play();
-            });
-        }
-        // hls.js is not supported on platforms that do not have Media Source Extensions (MSE) enabled.
-        // When the browser has built-in HLS support (check using `canPlayType`), we can provide an HLS manifest (i.e. .m3u8 URL) directly to the video element through the `src` property.
-        // This is using the built-in support of the plain video element, without using hls.js.
-        // Note: it would be more normal to wait on the 'canplay' event below however on Safari (where you are most likely to find built-in HLS support) the video.src URL must be on the user-driven
-        // white-list before a 'canplay' event will be emitted; the last video event that can be reliably listened-for when the URL is not on the white-list is 'loadedmetadata'.
-        else if (Rvideo.canPlayType('application/vnd.apple.mpegurl')) {
-            Rvideo.src = 'https://vp.nyt.com/video/hls/2020/01/22/20200122164746_1_sir_listings_00114118_wg/master.m3u8';
-            Rvideo.addEventListener('loadedmetadata', function() {
-            Rvideo.play();
-            });
-        }
-    }
-
-    function initVIDEOJS () {
-        var video = document.getElementById('vid1');
-        if (Hls.isSupported()) {
-            console.log(" yo its supported ");
-        }
-
-        var player = videojs('vid1');
-
-        //console.log(player.canPlayType('video/mp4'));
-
-
-        var videoDuration;
-        var Q1,Q2,Q3,Q4,vidUnits;
-
-        player.src({
-            //src: 'https://d2zihajmogu5jn.cloudfront.net/bipbop-advanced/bipbop_16x9_variant.m3u8',
-            //src: 'https://vp.stg.nyt.com/video/hls/stg/2020/02/19/118641_1_media-factory-ad-test_wg/master.m3u8',
-            src: 'https://vp.nyt.com/video/hls/2020/01/22/20200122164746_1_sir_listings_00114118_wg/master.m3u8',
-            // type: 'application/x-mpegURL',
-        // withCredentials: true
-        });
-
-        player.play();
-        player.poster('./poster.jpg');
-        player.muted(true);
-
-
-        player.on('ready', function() {
-
-        
-            this.on('loadedmetadata', function (event) {
-                
-                vidUnits = this.cache_.duration / 100;
-                videoDuration = Math.round(vidUnits * 100);
-            })
-
-            this.on('timeupdate', function () {
-                var CurTime = this.currentTime();
-                var CurPercent = CurTime / vidUnits;
-                var curPerRounded = Math.round(CurPercent);
-
-                if (curPerRounded === 25) {
-                    console.log(" yo its 25% ");
-                }
-
-                if (curPerRounded == 50) {
-                    console.log(" yo its 50% ");
-                }
-
-                if (curPerRounded == 75) {
-                    console.log(" yo its 75% ");
-                }
-
-                if (curPerRounded == 99) {
-                    console.log(" yo its 100% ");
-                }
-
-
-                console.log("Current Time: ",CurTime, "  Current Percentage: ", CurPercent);
-            })
-        });
-
-        player.on('play', function() {
-            console.log("player is playing ....");
-        });
-
-        player.on('loadstart', function() {
-            console.log("player is loadstart ....");
-        });
-
-        player.on('ended', function() {
-            console.log("player is ended ....");
-        });
-
-
-    }
-
-    //initVIDEOJS ();
-    initRegularVideoPlayer ();
-
-   
-   
-  
-
-   
-
-  
-
-    /*
-    video.addEventListener('play', (event) => {
-        const poster = document.getElementsByClassName("vjs-poster")[0];
-        const progress = document.getElementsByClassName("vjs-progress-holder vjs-slider vjs-slider-horizontal")[0].getAttribute('aria-valuenow');
-        var numProgress = parseInt(progress);
-        poster.style.display = "none";
-        console.log(numProgress + '% Completed');
-        PixFunction(pixel0);
-        return eventTracker.generalEventTrack('video', '0');
-    });
-
-    video.addEventListener('pause', (event) => {const progress = document.getElementsByClassName("vjs-progress-holder vjs-slider vjs-slider-horizontal")[0].getAttribute('aria-valuenow');});
-
-    video.addEventListener('ended', (event) => {
-        const poster = document.getElementsByClassName("vjs-poster")[0];
-        const progress = document.getElementsByClassName("vjs-progress-holder vjs-slider vjs-slider-horizontal")[0].getAttribute('aria-valuenow');
-        var numProgress = parseInt(progress);
-        poster.style.display = "block";
-
-        console.log(numProgress + '% Completed');
-        PixFunction(pixel100);
-        return eventTracker.generalEventTrack('video', '100');
-    });
-
-    */
-
-
-    /* Third party pixel function */
-    var pixel0 = "[%VideoStartTracker%]";
-    var pixel25 = "[%VideoFirstQtr%]";
-    var pixel50 = "[%VideoSecondQtr%]";
-    var pixel75 = "[%VideoThirdQtr%]";
-    var pixel100 = "[%VideoComplete%]";
-
 
     function PixFunction(x) {
         var pixel = x;
@@ -220,72 +67,17 @@
         document.body.appendChild(img);
         console.log("impressions pixel is firing");
     }
+    
+    initRegularVideoPlayer ({
+        hls: "https://vp.nyt.com/video/hls/2020/01/22/20200122164746_1_sir_listings_00114118_wg/master.m3u8",
+        mp4: "./video/sample.mp4",
+        debug: false,
+        trackingFunction: PixFunction,
+        autoplay: false
+    });
 
-    function Progress() {
-        const progress = document.getElementsByClassName("vjs-progress-holder vjs-slider vjs-slider-horizontal")[0].getAttribute('aria-valuenow');
-
-        var numProgress = parseInt(progress);
-
-        if (numProgress === 25) {
-            console.log(numProgress + '% Completed');
-            PixFunction(pixel25);
-            return eventTracker.generalEventTrack('video', '25');
-        }
-        if (numProgress === 50) {
-            console.log(numProgress + '% Completed');
-            PixFunction(pixel50);
-            return eventTracker.generalEventTrack('video', '50');
-        }
-        if (numProgress === 75) {
-            console.log(numProgress + '% Completed');
-            PixFunction(pixel75);
-            return eventTracker.generalEventTrack('video', '75');
-        }
-    }
-
-    //setInterval(Progress, 180);
-
-    "use strict";
-
-    /* Native Tracking Code */
-
-    var eventTracker = function () {
-        var ETLink =
-            "https://et.nytimes.com/?subject=dfp-ad-events&dfp_creativeid=%ecid!&dfp_lineitemid=%eaid!&dfp_orderid=%ebuy!&dfp_viewport=%%PATTERN:vp%%&pageviewid=%%PATTERN:page_view_id%%&dfp_pos=%%PATTERN:pos%%&dfp_prop=%%PATTERN:prop%%";
-
-        var ETSlideCall = function ETSlideCall(type, curr) { var next = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "";
-            var trackingLink = ETLink + "&dfp_event_type=" + type + "&dfp_event_location=slide-" + curr;
-            if (next != "") { trackingLink += "_" + "slide-" + next;}
-            document.createElement('img').src = trackingLink;
-        };
-        return {
-
-            generalEventTrack: function generalEventTrack(type, curr) {
-                var redirectLink = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "";
-                var trackingLink = ETLink + "&dfp_event_type=" + type + "&dfp_event_location=" + curr;
-                document.createElement('img').src = trackingLink;
-                if (redirectLink != "") {window.open(redirectLink, '_blank');}
-
-                parent.postMessage({
-                        event: 'send-direct',
-                        payload: {
-                            dfp_creativeid: '%ecid!',
-                            dfp_orderid: '%ebuy!',
-                            dfp_viewport: '%%PATTERN:vp%%',
-                            dfp_pos: '%%PATTERN:pos%%',
-                            dfp_prop: '%%PATTERN:prop%%',
-                            dfp_event_type: type,
-                            dfp_event_location: curr,
-                            subject: 'dfp-ad-events'
-                        }
-                    },
-                    'https://www.nytimes.com/'
-                );
-            }          
-        };
-    }();
-
-
+   
+    /*
     (function () {
         var mediaContainer = document.getElementById('media-container')
         var tabletContent = mediaContainer.getElementsByClassName('media-content')[0];
@@ -320,6 +112,8 @@
         function reset() {}
 
     })();
+
+    */
 
     /*
     try {
