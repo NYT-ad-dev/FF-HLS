@@ -8,16 +8,29 @@ class Video {
     var Q3 = true;
     var Q4 = true;
 
-    var pixel0 = "[%VideoStartTracker%]";
-    var pixel25 = "[%VideoFirstQtr%]";
-    var pixel50 = "[%VideoSecondQtr%]";
-    var pixel75 = "[%VideoThirdQtr%]";
-    var pixel100 = "[%VideoComplete%]";
+    var pixel0 = data.TrackingPixels["0%"];
+    var pixel25 = data.TrackingPixels["25%"];
+    var pixel50 = data.TrackingPixels["50%"];
+    var pixel75 = data.TrackingPixels["75%"];
+    var pixel100 = data.TrackingPixels["100%"];
     var duration;
     var vidUnits;
 
   
-    var Rvideo = document.getElementById(data.id);
+	var Rvideo = document.getElementById(data.id);
+	
+
+	if (data.inline) {
+		Rvideo.setAttribute('playsinline', '');
+	}
+
+	if (data.autoplay) {
+		Rvideo.setAttribute('autoplay', '');
+	}
+
+	if (data.preload) {
+		Rvideo.setAttribute('preload', data.preload );
+	}
 
     	// hls.js is not supported on platforms that do not have Media Source Extensions (MSE) enabled.
 		// When the browser has built-in HLS support (check using `canPlayType`), we can provide an HLS manifest (i.e. .m3u8 URL) directly to the video element through the `src` property.
@@ -46,7 +59,8 @@ class Video {
 
     Rvideo.addEventListener('play', (event) => {
        if (data.debug) console.log("video is playing");
-       data.trackingFunction(pixel0);
+       if (data.TrackingPixels) this.FirePixel(pixel0);
+       
     });
 
     Rvideo.addEventListener('pause', (event) => {
@@ -129,7 +143,7 @@ class Video {
         if (curPerRounded === 25) {
             if (Q1) {
                if (data.debug) console.log(" yo its 25% ");
-               data.trackingFunction(pixel25);
+               if (data.TrackingPixels) this.FirePixel(pixel25);
                Q1 = false;
             }
            
@@ -138,7 +152,7 @@ class Video {
         if (curPerRounded == 50) {
             if (Q2) {
                if (data.debug) console.log(" yo its 50% ");
-               data.trackingFunction(pixel50);
+               if (data.TrackingPixels) this.FirePixel(pixel50);
                Q2 = false;
             }
            
@@ -147,7 +161,7 @@ class Video {
         if (curPerRounded == 75) {
             if (Q3) {
                if (data.debug) console.log(" yo its 75% ");
-               data.trackingFunction(pixel75);
+               if (data.TrackingPixels) this.FirePixel(pixel75);
                Q3 = false;
             }
             
@@ -156,7 +170,7 @@ class Video {
         if (curPerRounded == 99) {
             if (Q4) {
                if (data.debug) console.log(" yo its 100% ");
-               data.trackingFunction(pixel100);
+               if (data.TrackingPixels) this.FirePixel(pixel100);
                Q4 = false;
             }
             
@@ -197,4 +211,13 @@ class Video {
     });
 
   }
+
+	FirePixel(x) {
+		var pixel = x;
+		var img = document.createElement("img");
+		img.setAttribute("src", pixel);
+		img.setAttribute("style", "display:none");
+		document.body.appendChild(img);
+		console.log("impressions pixel is firing");
+	}
 }
