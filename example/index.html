@@ -10,7 +10,7 @@
     <!-- <link href="https://vjs.zencdn.net/7.6.6/video-js.css" rel="stylesheet" /> -->
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
     <script src="js/metrics.js"></script>
-    <script src="js/regular-player.js"></script>
+    <script src="js/Video.js"></script>
     <!-- <script src="js/hls.js"></script> -->
 
     <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script> -->
@@ -29,8 +29,7 @@
         <div id="media-container" class="media-container">
             <!-- <video controls [%Autoplay%] preload="auto" id='my-video' class='video-js' width='480' height='270' poster ='[%VideoCover%]'data-setup='{}'> <source src='[%VideoURL%]' type='video/mp4'></video> -->
             <!-- <video class="video-js vjs-theme-city" id=vid1 width=480 height=270 controls data-setup='{}'></video> -->
-            <video class='video-style' controls preload="auto" id="regular-player" autoplay playsInline muted src=""></video>
-          
+            <video id="regular-player" class='video-style' controls preload="auto"  autoplay playsInline muted src=""></video>
         </div>
 
         <a class="non-media" target="_blank" href="%%CLICK_URL_UNESC%%%%DEST_URL%%">
@@ -68,14 +67,16 @@
         console.log("impressions pixel is firing");
     }
     
-    initRegularVideoPlayer ({
-        hls: "https://vp.nyt.com/video/hls/2020/01/22/20200122164746_1_sir_listings_00114118_wg/master.m3u8",
+    var Player = new Video ({
+        id: 'regular-player',
+       // hls: "https://vp.nyt.com/video/hls/2020/01/22/20200122164746_1_sir_listings_00114118_wg/master.m3u8",
         mp4: "./video/sample.mp4",
         debug: false,
         trackingFunction: PixFunction,
         autoplay: false
     });
 
+   
    
     /*
     (function () {

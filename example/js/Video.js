@@ -1,7 +1,7 @@
 
 
-
-function initRegularVideoPlayer (data) {
+class Video {
+  constructor (data) {
 
     var Q1 = true;
     var Q2 = true;
@@ -17,29 +17,36 @@ function initRegularVideoPlayer (data) {
     var vidUnits;
 
   
+    var Rvideo = document.getElementById(data.id);
 
-	var Rvideo = document.getElementById('regular-player');
-	
-    if (Hls.isSupported()) {
-		var hls = new Hls();
-		hls.loadSource(data.hls);
-		hls.attachMedia(Rvideo);
-		hls.on(Hls.Events.MANIFEST_PARSED, function() { if (data.autoplay) { Rvideo.play();}});
-	}
-
-	// hls.js is not supported on platforms that do not have Media Source Extensions (MSE) enabled.
-	// When the browser has built-in HLS support (check using `canPlayType`), we can provide an HLS manifest (i.e. .m3u8 URL) directly to the video element through the `src` property.
-	// This is using the built-in support of the plain video element, without using hls.js.
-	// Note: it would be more normal to wait on the 'canplay' event below however on Safari (where you are most likely to find built-in HLS support) the video.src URL must be on the user-driven
-	// white-list before a 'canplay' event will be emitted; the last video event that can be reliably listened-for when the URL is not on the white-list is 'loadedmetadata'.
-
-	else if (Rvideo.canPlayType('application/vnd.apple.mpegurl')) {
-		Rvideo.src = data.mp4;
-		Rvideo.addEventListener('loadedmetadata', function() {if (data.autoplay) {Rvideo.play();}});
-	}
+    	// hls.js is not supported on platforms that do not have Media Source Extensions (MSE) enabled.
+		// When the browser has built-in HLS support (check using `canPlayType`), we can provide an HLS manifest (i.e. .m3u8 URL) directly to the video element through the `src` property.
+		// This is using the built-in support of the plain video element, without using hls.js.
+		// Note: it would be more normal to wait on the 'canplay' event below however on Safari (where you are most likely to find built-in HLS support) the video.src URL must be on the user-driven
+		// white-list before a 'canplay' event will be emitted; the last video event that can be reliably listened-for when the URL is not on the white-list is 'loadedmetadata'.
+    
+    if (data.hls) {
+      if (Hls.isSupported()) {
+        var hls = new Hls();
+        hls.loadSource(data.hls);
+        hls.attachMedia(Rvideo);
+        hls.on(Hls.Events.MANIFEST_PARSED, function() { if (data.autoplay) { Rvideo.play();}});
+      }
+    
+      else if (Rvideo.canPlayType('application/vnd.apple.mpegurl')) {
+        Rvideo.src = data.mp4;
+        Rvideo.addEventListener('loadedmetadata', function() {if (data.autoplay) {Rvideo.play();}});
+      }
+    }
+    else {
+      Rvideo.src = data.mp4;
+      Rvideo.addEventListener('loadedmetadata', function() {if (data.autoplay) {Rvideo.play();}});
+    }
+ 
 
     Rvideo.addEventListener('play', (event) => {
        if (data.debug) console.log("video is playing");
+       data.trackingFunction(pixel0);
     });
 
     Rvideo.addEventListener('pause', (event) => {
@@ -189,4 +196,5 @@ function initRegularVideoPlayer (data) {
       if (data.debug) console.log("video is playing");
     });
 
+  }
 }
