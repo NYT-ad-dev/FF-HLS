@@ -25,7 +25,7 @@
         <div id="media-container" class="media-container">
             <!-- <video controls [%Autoplay%] preload="auto" id='my-video' class='video-js' width='480' height='270' poster ='[%VideoCover%]'data-setup='{}'> <source src='[%VideoURL%]' type='video/mp4'></video> -->
             <!-- <video class="video-js vjs-theme-city" id=vid1 width=480 height=270 controls data-setup='{}'></video> -->
-            <video id="regular-player" class='video-style' muted controls src=""></video>
+            <video id="vid-1"></video>
         </div>
 
         <a class="non-media" target="_blank" href="%%CLICK_URL_UNESC%%%%DEST_URL%%">
@@ -54,20 +54,15 @@
 
 <script type="text/javascript">
 
-    function PixFunction(x) {
-        var pixel = x;
-        var img = document.createElement("img");
-        img.setAttribute("src", pixel);
-        img.setAttribute("style", "display:none");
-        document.body.appendChild(img);
-        console.log("impressions pixel is firing");
-    }
-    
+
     var Player = new Video ({
-        id: 'regular-player',
+        id: 'vid-1',
+        class: "video-style",
         hls: "https://vp.nyt.com/video/hls/2020/01/22/20200122164746_1_sir_listings_00114118_wg/master.m3u8",
         mp4: "./video/sample.mp4",
         inline: true,
+        controls: true,
+        muted: true,
         preload: "auto",
         debug: false,
         TrackingPixels: {
@@ -78,7 +73,7 @@
             "100%": "[%VideoComplete%]"
         },
         autoplay: true,
-        poster: "",
+        poster: "./images/poster.jpg",
 
     });
 

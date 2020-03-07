@@ -3,30 +3,40 @@
 class Video {
   constructor (data) {
 
-    var Q1 = true;
-    var Q2 = true;
-    var Q3 = true;
-    var Q4 = true;
+    let Q1 = true;
+    let Q2 = true;
+    let Q3 = true;
+    let Q4 = true;
 
-    var pixel0 = data.TrackingPixels["0%"];
-    var pixel25 = data.TrackingPixels["25%"];
-    var pixel50 = data.TrackingPixels["50%"];
-    var pixel75 = data.TrackingPixels["75%"];
-    var pixel100 = data.TrackingPixels["100%"];
-    var duration;
-    var vidUnits;
+    const pixel0 = data.TrackingPixels["0%"];
+    const pixel25 = data.TrackingPixels["25%"];
+    const pixel50 = data.TrackingPixels["50%"];
+    const pixel75 = data.TrackingPixels["75%"];
+    const pixel100 = data.TrackingPixels["100%"];
+   
+
+    let Scope = this;
+    let duration;
+    let vidUnits;
 
   
-	var Rvideo = document.getElementById(data.id);
-	
+  const Rvideo = document.getElementById(data.id);
+  const Container = Rvideo.parentElement;
 
-	if (data.inline) {
-		Rvideo.setAttribute('playsinline', '');
-	}
+  var posterElement = this.MakePoster(data.id, data.poster);
+  Container.appendChild(posterElement);  
 
-	if (data.autoplay) {
-		Rvideo.setAttribute('autoplay', '');
-	}
+  if (data.autoplay) { posterElement.style.display = "none";}
+
+  if (data.class) { Rvideo.className += data.class; }
+
+  if (data.inline) { Rvideo.setAttribute('playsinline', '');}
+
+  if (data.muted) { Rvideo.muted = true;}
+  
+  if (data.controls) { Rvideo.controls = true;}
+
+	if (data.autoplay) { Rvideo.autoplay = true;}
 
 	if (data.preload) {
 		Rvideo.setAttribute('preload', data.preload );
@@ -40,7 +50,7 @@ class Video {
     
     if (data.hls) {
       if (Hls.isSupported()) {
-        var hls = new Hls();
+        const hls = new Hls();
         hls.loadSource(data.hls);
         hls.attachMedia(Rvideo);
         hls.on(Hls.Events.MANIFEST_PARSED, function() { if (data.autoplay) { Rvideo.play();}});
@@ -87,10 +97,14 @@ class Video {
 
     Rvideo.addEventListener('ended', (event) => {
       if (data.debug) console.log("video is ended");
+
         Q1 = true;
         Q2 = true;
         Q3 = true;
         Q4 = true;
+
+       // console.log(posterElement);
+        posterElement.style.display = "block";
     });
 
     Rvideo.addEventListener('emptied', (event) => {
@@ -136,9 +150,12 @@ class Video {
     Rvideo.addEventListener('timeupdate', (event) => {
       if (data.debug) console.log("video is timeupdate",event.target.currentTime);
 
-        var CurTime = event.target.currentTime;
-        var CurPercent = CurTime / vidUnits;
-        var curPerRounded = Math.round(CurPercent);
+      //this.TimeUpdate(event);
+
+      
+        let CurTime = event.target.currentTime;
+        let CurPercent = CurTime / vidUnits;
+        let curPerRounded = Math.round(CurPercent);
 
         if (curPerRounded === 25) {
             if (Q1) {
@@ -175,7 +192,7 @@ class Video {
             }
             
         }
-
+        
 
         if (data.debug) console.log("Current Time: ",CurTime, "  Current Percentage: ", CurPercent);
 
@@ -209,7 +226,62 @@ class Video {
     Rvideo.addEventListener('playing', (event) => {
       if (data.debug) console.log("video is playing");
     });
+  }
 
+  TimeUpdate (event) {
+    let CurTime = event.target.currentTime;
+    let CurPercent = CurTime / this.vidUnits;
+    let curPerRounded = Math.round(CurPercent);
+
+    if (curPerRounded === 25) {
+        if (Q1) {
+           if (data.debug) console.log(" yo its 25% ");
+           if (data.TrackingPixels) this.FirePixel(pixel25);
+           Q1 = false;
+        }
+       
+    }
+
+    if (curPerRounded == 50) {
+        if (Q2) {
+           if (data.debug) console.log(" yo its 50% ");
+           if (data.TrackingPixels) this.FirePixel(pixel50);
+           Q2 = false;
+        }
+       
+    }
+
+    if (curPerRounded == 75) {
+        if (Q3) {
+           if (data.debug) console.log(" yo its 75% ");
+           if (data.TrackingPixels) this.FirePixel(pixel75);
+           Q3 = false;
+        }
+        
+    }
+
+    if (curPerRounded == 99) {
+        if (Q4) {
+           if (data.debug) console.log(" yo its 100% ");
+           if (data.TrackingPixels) this.FirePixel(pixel100);
+           Q4 = false;
+        }
+    }
+  }
+
+  MakePoster (ID, imageurl) {
+    var poster = document.createElement("div"); 
+    poster.setAttribute('id', 'poster-' + ID);
+    poster.style.width = "100%";
+    poster.style.height = "100%";
+    poster.style.position = "absolute";
+    poster.style.top = "0px";
+    poster.style.left = "0px";
+    poster.style.backgroundImage = 'url(' + imageurl + ')';
+    poster.style.backgroundSize = "cover";
+    poster.style.backgroundPosition = "50%";
+    poster.style.backgroundRepeat = "no-repeat";
+    return poster;
   }
 
 	FirePixel(x) {
