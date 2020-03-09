@@ -19,28 +19,45 @@ class Video {
     let duration;
     let vidUnits;
 
-  
-  const Rvideo = document.getElementById(data.id);
-  const Container = Rvideo.parentElement;
+	const Rvideo = document.getElementById(data.id);
+	const Container = Rvideo.parentElement;
 
-  var posterElement = this.MakePoster(data.id, data.poster);
-  Container.appendChild(posterElement);  
+	var posterElement = this.MakePoster(data.id, data.poster);
+	var posterBG = this.MakePosterBG(data.id, data.poster);
+	var posterPlayBtn = this.MakePlayButtonOverPoster (data.id, data.playbutton);
 
-  if (data.autoplay) { posterElement.style.display = "none";}
+	posterElement.className += "poster-frame"; 
 
-  if (data.class) { Rvideo.className += data.class; }
+	posterElement.appendChild(posterBG);
+	posterElement.appendChild(posterPlayBtn);
+	Container.appendChild(posterElement);  
 
-  if (data.inline) { Rvideo.setAttribute('playsinline', '');}
+	posterBG.addEventListener("click", function() {
+		eventTracker.generalEventTrack('clickURL', 'cta', '%%CLICK_URL_UNESC%%%%DEST_URL_UNESC%%');
+	});
 
-  if (data.muted) { Rvideo.muted = true;}
-  
-  if (data.controls) { Rvideo.controls = true;}
+	posterPlayBtn.addEventListener("click", function() {
+		Rvideo.play();
+	});
+
+	if (data.autoplay) { posterElement.style.display = "none";}
+	else { 
+		if (data.poster) { Rvideo.setAttribute('poster', data.poster ); }
+		Rvideo.style.display = "none";
+	}
+
+	if (data.class) { Rvideo.className += data.class; }
+
+	if (data.inline) { Rvideo.setAttribute('playsinline', '');}
+
+	if (data.muted) { Rvideo.muted = true;}
+
+	if (data.controls) { Rvideo.controls = true;}
 
 	if (data.autoplay) { Rvideo.autoplay = true;}
 
-	if (data.preload) {
-		Rvideo.setAttribute('preload', data.preload );
-	}
+	if (data.preload) { Rvideo.setAttribute('preload', data.preload );}
+  
 
     	// hls.js is not supported on platforms that do not have Media Source Extensions (MSE) enabled.
 		// When the browser has built-in HLS support (check using `canPlayType`), we can provide an HLS manifest (i.e. .m3u8 URL) directly to the video element through the `src` property.
@@ -74,7 +91,8 @@ class Video {
     });
 
     Rvideo.addEventListener('pause', (event) => {
-      if (data.debug) console.log("video is paused");
+	  if (data.debug) console.log("video is paused");
+	  posterElement.style.display = "block";
     });
 
     Rvideo.addEventListener('loadedmetadata', (event) => {
@@ -207,24 +225,14 @@ class Video {
       if (data.debug) console.log("video is waiting");
     });
 
-    Rvideo.addEventListener('waiting', (event) => {
-      if (data.debug) console.log("video is waiting");
-    });
-
-    Rvideo.addEventListener('waiting', (event) => {
-      if (data.debug) console.log("video is waiting");
-    });
-
-    Rvideo.addEventListener('waiting', (event) => {
-      if (data.debug) console.log("video is waiting");
-    });
-
     Rvideo.addEventListener('loadstart', (event) => {
       if (data.debug) console.log("video is loadstart");
     });
 
     Rvideo.addEventListener('playing', (event) => {
-      if (data.debug) console.log("video is playing");
+		if (data.debug) console.log("video is playing");
+		posterElement.style.display = "none";
+		Rvideo.style.display = "block";
     });
   }
 
@@ -269,20 +277,52 @@ class Video {
     }
   }
 
-  MakePoster (ID, imageurl) {
-    var poster = document.createElement("div"); 
-    poster.setAttribute('id', 'poster-' + ID);
-    poster.style.width = "100%";
-    poster.style.height = "100%";
-    poster.style.position = "absolute";
-    poster.style.top = "0px";
-    poster.style.left = "0px";
-    poster.style.backgroundImage = 'url(' + imageurl + ')';
-    poster.style.backgroundSize = "cover";
-    poster.style.backgroundPosition = "50%";
-    poster.style.backgroundRepeat = "no-repeat";
-    return poster;
-  }
+	MakeElements (what,ID) {
+		var Element = document.createElement(what); 
+		Element.setAttribute('id', 'Element-' + ID);
+		return Element;
+	}
+
+	MakePoster (ID, imageurl) {
+		var poster = this.MakeElements("div",ID);
+		poster.style.width = "100%";
+		poster.style.height = "100%";
+		poster.style.position = "absolute";
+		poster.style.top = "0px";
+		poster.style.left = "0px";
+		return poster;
+	}
+
+	MakePosterBG (ID, imageurl) {
+		var poster = this.MakeElements("div","background-" + ID);
+		poster.style.width = "100%";
+		poster.style.height = "100%";
+		poster.style.position = "absolute";
+		poster.style.top = "0px";
+		poster.style.left = "0px";
+		poster.style.backgroundImage = 'url(' + imageurl + ')';
+		poster.style.backgroundSize = "cover";
+		poster.style.backgroundPosition = "50%";
+		poster.style.backgroundRepeat = "no-repeat";
+		return poster;
+	}
+
+	MakePlayButtonOverPoster (ID, imageurl) {
+		var playBtn = this.MakeElements("div","play-button-" + ID);
+		playBtn.style.position = "absolute";
+		playBtn.style.backgroundImage = 'url(' + imageurl + ')';
+		playBtn.style.backgroundSize = "contain";
+		playBtn.style.width = "50px";
+		playBtn.style.height = "50px";
+		playBtn.style.left = "0px";
+		playBtn.style.right = "0px";
+		playBtn.style.top = "0px";
+		playBtn.style.bottom = "0px";
+		playBtn.style.margin = "auto";
+		playBtn.style.backgroundPosition = "50%";
+		playBtn.style.backgroundRepeat = "no-repeat";
+		return playBtn;
+	}
 
 	FirePixel(x) {
 		var pixel = x;
