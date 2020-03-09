@@ -7,49 +7,35 @@
     <title>FF-HLS</title>
     <link rel="shortcut icon" href="#" />
     <link rel="stylesheet" href="css/style.css">
-    <!-- <link href="https://vjs.zencdn.net/7.6.6/video-js.css" rel="stylesheet" /> -->
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
     <script src="js/metrics.js"></script>
     <script src="js/Video.js"></script>
-    <!-- <script src="js/hls.js"></script> -->
-    <!-- <script src="https://unpkg.com/video.js/dist/video.js"></script> -->
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/video.js/7.0.0/video.min.js"></script> -->
-    <!-- <script src="video.min.js"></script> -->
-    <!-- <script src="videojs-contrib-hls.min.js"></script> -->
 </head>
 <body>
 
 <div id="container" class="container">
     <div class="flex-frame">
 
-        <div id="media-container" class="media-container">
-            <!-- <video controls [%Autoplay%] preload="auto" id='my-video' class='video-js' width='480' height='270' poster ='[%VideoCover%]'data-setup='{}'> <source src='[%VideoURL%]' type='video/mp4'></video> -->
-            <!-- <video class="video-js vjs-theme-city" id=vid1 width=480 height=270 controls data-setup='{}'></video> -->
-            <video id="vid-1"></video>
-        </div>
-
+        <div id="media-container" class="media-container"> <video id="vid-1"></video></div>
         <a class="non-media" target="_blank" href="%%CLICK_URL_UNESC%%%%DEST_URL%%">
             <div class="content-container">
                 <div class="content-well">
-                    <div class="logo">
-                        <img onclick="eventTracker.generalEventTrack('clickURL', 'logo', '%%CLICK_URL_UNESC%%%%DEST_URL_UNESC%%')" src="./images/logo.png" />
-                    </div>
+                    <div class="logo"><img onclick="eventTracker.generalEventTrack('clickURL', 'logo', '%%CLICK_URL_UNESC%%%%DEST_URL_UNESC%%')" src="[%LOGO%]" /></div>
                     <div class="content-middle-well">
-                        <div id="title" class="title">An Adventure Awaits for Everyone</div>
-                        <div class="summary">Receive 10% off when you book your next vacation with us.</div>
-                        <div onclick="eventTracker.generalEventTrack('clickURL', 'cta', '%%CLICK_URL_UNESC%%%%DEST_URL_UNESC%%')" class="cta">LEARN MORE</div>
+                        <div id="title" class="title">[%Headline%]</div>
+                        <div class="summary">[%Summary%]</div>
+                        <div onclick="eventTracker.generalEventTrack('clickURL', 'cta', '%%CLICK_URL_UNESC%%%%DEST_URL_UNESC%%')" class="cta">[%CTA%]</div>
                         <div id="disclaimer" class="disclaimer">[%Disclaimer%]</div>
                     </div>
                 </div>
             </div>
-            <div class="img-container"><img src="./images/hero.png" /></div>
+            <div class="img-container"><img src="[%HeroImage%]" /></div>
         </a>
     </div>
 </div>
 
-<div style="display: none;">[%CustomTracking%]</div>
-<div id="impression-pixel" class="impression-tracker"><img src="" width="1" height="1" border="0" /></div>
-<div id="impression-pixel-2" class="impression-tracker"><img src="" width="1" height="1" border="0" /></div>
+<div id="impression-pixel" class="impression-tracker"><img src="[%ImpressionTracker1%]" width="1" height="1" border="0" /></div>
+<div id="impression-pixel-2" class="impression-tracker"><img src="[%ImpressionTracker2%]" width="1" height="1" border="0" /></div>
 
 
 <script type="text/javascript">
@@ -74,61 +60,23 @@
         },
         autoplay: true,
         poster: "./images/poster.jpg",
-        playbutton: "./images/btn-play.svg"
-
+        playbutton: "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDI0LjAuMywgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPgo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9Iml0ZW1zIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB4PSIwcHgiIHk9IjBweCIKCSB2aWV3Qm94PSIwIDAgNDAxIDM5OSIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgNDAxIDM5OTsiIHhtbDpzcGFjZT0icHJlc2VydmUiPgo8c3R5bGUgdHlwZT0idGV4dC9jc3MiPgoJLnN0MHtmaWxsOiNGRkZGRkY7fQo8L3N0eWxlPgo8ZyBpZD0icGxheSI+Cgk8cG9seWdvbiBjbGFzcz0ic3QwIiBwb2ludHM9IjE2MCwxMzQgMjc2LDIwNCAxNjAsMjczLjUgCSIvPgo8L2c+CjxnIGlkPSJyaW5nIj4KCTxnPgoJCTxwYXRoIGNsYXNzPSJzdDAiIGQ9Ik0yMDEsMzgxLjZjLTEwMC44LDAtMTgyLjctODEuOC0xODIuNy0xODIuM1MxMDAuMywxNi45LDIwMSwxNi45czE4Mi43LDgxLjgsMTgyLjcsMTgyLjMKCQkJUzMwMS44LDM4MS42LDIwMSwzODEuNnogTTIwMSw1My45Yy04MC40LDAtMTQ1LjcsNjUuMi0xNDUuNywxNDUuM1MxMjAuNywzNDQuNSwyMDEsMzQ0LjVjODAuNCwwLDE0NS43LTY1LjIsMTQ1LjctMTQ1LjMKCQkJQzM0Ni44LDExOS4xLDI4MS40LDUzLjksMjAxLDUzLjl6Ii8+Cgk8L2c+CjwvZz4KPC9zdmc+Cg==",
+        pausebutton: "",
+        mutebutton: "",
+        unmutebutton: "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDI0LjAuMywgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPgo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IgoJIHZpZXdCb3g9IjAgMCA0MDEgMzk5IiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCA0MDEgMzk5OyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+CjxzdHlsZSB0eXBlPSJ0ZXh0L2NzcyI+Cgkuc3Qwe2ZpbGw6I0ZFRkVGRTt9Cgkuc3Qxe2ZpbGw6I0ZGRkZGRjt9Cjwvc3R5bGU+CjxnIGlkPSJzcGVha2VyIj4KCTxnIGlkPSJzb3VuZFdhdmVzIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxMi4zNDI4NTcsIDYuODU3MTQzKSI+CgkJPGcgaWQ9InNvdW5kLXdhdmUtMyI+CgkJCTxwYXRoIGNsYXNzPSJzdDAiIGQ9Ik0yNDcuMSwyNjkuNWMtMi4xLDAtNC4yLTEtNS41LTIuOWMtMi4xLTMtMS4zLTcuMiwxLjgtOS4yYzE5LjUtMTMuMiwzMS41LTM4LDMxLjUtNjQuNwoJCQkJYzAtMjYuNi0xMi4xLTUxLjQtMzEuNS02NC42Yy0zLTIuMS0zLjgtNi4yLTEuOC05LjJjMi4xLTMsNi4yLTMuOCw5LjItMS44YzIzLDE1LjcsMzcuMyw0NC42LDM3LjMsNzUuNnMtMTQuMyw2MC0zNy40LDc1LjYKCQkJCUMyNDkuNywyNjkuMiwyNDguNCwyNjkuNSwyNDcuMSwyNjkuNXoiLz4KCQk8L2c+CgkJPGcgaWQ9InNvdW5kLXdhdmUtMiI+CgkJCTxwYXRoIGNsYXNzPSJzdDAiIGQ9Ik0yMjEuMSwyNTIuMWMtMi4xLDAtNC4yLTEtNS41LTIuOWMtMi4xLTMtMS4zLTcuMiwxLjgtOS4yYzE0LjItOS43LDIzLTI3LjgsMjMtNDcuM3MtOC44LTM3LjYtMjMtNDcuMgoJCQkJYy0zLTIuMS0zLjgtNi4yLTEuOC05LjJjMi4xLTMsNi4yLTMuOCw5LjItMS44YzE3LjgsMTIuMSwyOC44LDM0LjQsMjguOCw1OC4ycy0xMSw0Ni4xLTI4LjgsNTguMgoJCQkJQzIyMy43LDI1MS44LDIyMi40LDI1Mi4xLDIyMS4xLDI1Mi4xeiIvPgoJCTwvZz4KCQk8ZyBpZD0ic291bmQtd2F2ZS0xIj4KCQkJPHBhdGggY2xhc3M9InN0MCIgZD0iTTE5OS40LDIzMy4xYy0yLjEsMC00LjItMS01LjUtMi45Yy0yLjEtMy0xLjMtNy4yLDEuOC05LjJjOC40LTUuNywxMy43LTE2LjUsMTMuNy0yOC4ycy01LjItMjIuNS0xMy42LTI4LjIKCQkJCWMtMy0yLjEtMy44LTYuMi0xLjgtOS4yYzIuMS0zLDYuMi0zLjgsOS4yLTEuOGMxMiw4LjIsMTkuNSwyMy4yLDE5LjUsMzkuMnMtNy41LDMxLTE5LjUsMzkuMkMyMDIsMjMyLjcsMjAwLjcsMjMzLjEsMTk5LjQsMjMzLjEKCQkJCXoiLz4KCQk8L2c+Cgk8L2c+Cgk8ZyBpZD0ic3BlYWtlcl8yXyI+CgkJPHBhdGggY2xhc3M9InN0MSIgZD0iTTE4OSwyMjkuMnYtMzEuM3YwLjF2LTAuMmwwLDB2LTMxLjN2LTEwLjNWMTM0aC05LjFsLTM2LjQsMzYuNGgtMjcuM2MtNSwwLTkuMSw0LjEtOS4xLDkuMVYyMTYKCQkJYzAsNSw0LjEsOS4xLDkuMSw5LjFoMjcuM2wzNi40LDM2LjRoOS4xdi0yMi4xVjIyOS4yeiIvPgoJPC9nPgo8L2c+CjxnIGlkPSJyaW5nIj4KCTxnPgoJCTxwYXRoIGNsYXNzPSJzdDEiIGQ9Ik0yMDEsMzgxLjZjLTEwMC44LDAtMTgyLjctODEuOC0xODIuNy0xODIuM1MxMDAuMywxNi45LDIwMSwxNi45czE4Mi43LDgxLjgsMTgyLjcsMTgyLjMKCQkJUzMwMS44LDM4MS42LDIwMSwzODEuNnogTTIwMSw1My45Yy04MC40LDAtMTQ1LjcsNjUuMi0xNDUuNywxNDUuM1MxMjAuNywzNDQuNSwyMDEsMzQ0LjVjODAuNCwwLDE0NS43LTY1LjIsMTQ1LjctMTQ1LjMKCQkJQzM0Ni44LDExOS4xLDI4MS40LDUzLjksMjAxLDUzLjl6Ii8+Cgk8L2c+CjwvZz4KPC9zdmc+Cg==",
     });
-
-   
-   
-    /*
-    (function () {
-        var mediaContainer = document.getElementById('media-container')
-        var tabletContent = mediaContainer.getElementsByClassName('media-content')[0];
-        var tabletCTA = mediaContainer.getElementsByClassName('cta')[0];
-        var tabletGradient = mediaContainer.getElementsByClassName('gradient')[0];
-        var tabletLogo = mediaContainer.getElementsByClassName('logo')[0];
-        var isIphone = navigator.userAgent.indexOf('iPhone') >= 0;
-
-        if (isIphone) {} else {
-                function status_update(status, data) {
-                if ($sf.ext.inViewPercentage() < 50) {
-                    revealCover();
-                    reset();
-                } else {hideCover();}
-            }
-        }
-
-        function revealCover() {
-            tabletContent.classList.remove('hidden');
-            tabletCTA.classList.add('hidden');
-            tabletGradient.classList.remove('hidden');
-            tabletLogo.classList.remove('hidden');
-        }
-
-        function hideCover() {
-            tabletContent.classList.add('hidden');
-            tabletCTA.classList.remove('hidden');
-            tabletGradient.classList.add('hidden');
-            tabletLogo.classList.remove('hidden');
-        }
-
-        function reset() {}
-
-    })();
-
-    */
 
     /*
     try {
         (function () {
-            var toggleGradient = [ % ToggleGradient % ];
+            var toggleGradient = [%ToggleGradient%];
             var gradients = [].slice.call(document.getElementsByClassName('gradient'));
             if (toggleGradient > 0) {gradients.forEach(function (el) {el.style.display = 'none';});}
         })();
     }
     catch (Error) {}
    
-    try {parent.postMessage({exclusive: [ % Exclusivity % ],type: '[%ExclusivityType%]',div: '%%PATTERN:div%%'}, '*');}catch (Error) {}
+    try {parent.postMessage({exclusive: [%Exclusivity%],type: '[%ExclusivityType%]',div: '%%PATTERN:div%%'}, '*');}catch (Error) {}
 
     */
 

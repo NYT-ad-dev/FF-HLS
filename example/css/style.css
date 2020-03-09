@@ -4,7 +4,7 @@
 :root {
 	--main-bg-color: black;
 	--font-color: white;
-	--default-font: 'Source Sans Pro', sans-serif;
+	--default-font: 'Source Sans Pro';
 	--bold-font: 700:
 	--medium-font: 600;
 	--regular-font: 400;
@@ -41,14 +41,7 @@ body {
   
   
 .impression-tracker { display: none;}
-  
-.hidden {
-	opacity: 0;
-	transition: opacity .25s ease-in-out;
-	-moz-transition: opacity .25s ease-in-out;
-	-webkit-transition: opacity .25s ease-in-out;
-}
-  
+    
 .ad-link { text-decoration: none; }
 
 a:link, a:visited, a:focus {
@@ -72,7 +65,7 @@ p { margin: 0; }
 
 /* fonts  */
   
-@font-face {
+/* @font-face {
 	font-family: "[%FontFamilyName%]";
 	src: url([%FontURL%]) format("[%FontFormat%]");
 }
@@ -80,7 +73,7 @@ p { margin: 0; }
 @font-face {
 	font-family: "[%SecondFontFamilyName%]";
 	src: url([%SecondFontURL%]) format("[%SecondFontFormat%]");
-}
+} */
 
 
 .container {
@@ -170,7 +163,7 @@ p { margin: 0; }
 
 .container .flex-frame .non-media .content-container .content-well .content-middle-well .title {
 	font-size: 27px;
-	font-family: var(--default-font);
+	font-family: var(--default-font, Arial, Helvetica, sans-serif);
 	font-weight: var(--medium-font);
 	max-width: 485px;
 	margin-bottom: 5px;
@@ -180,7 +173,7 @@ p { margin: 0; }
 
 .container .flex-frame .non-media .content-container .content-well .content-middle-well .summary {
 	font-size: 18px;
-	font-family: var(--default-font);
+	font-family: var(--default-font, Arial, Helvetica, sans-serif);
 	font-weight: var(--regular-font);
 	max-width: 280px;
 	margin-bottom: 12px;
@@ -194,7 +187,7 @@ p { margin: 0; }
 	font-size: 14px;
 	padding: 10px 15px;
 	text-transform: uppercase;
-	font-family: var(--default-font);
+	font-family: var(--default-font, Arial, Helvetica, sans-serif);
 	font-weight: var(--medium-font);
 	text-align: center;
 	display: inline-block;
@@ -208,7 +201,7 @@ p { margin: 0; }
   
 .container .flex-frame .non-media .content-container .content-well .content-middle-well .disclaimer {
 	display:none;
-	font-family: var(--default-font);
+	font-family: var(--default-font, Arial, Helvetica, sans-serif);
 	font-weight: var(--regular-font);
 	font-size: 8px;
 	margin-bottom: 11px;
@@ -233,24 +226,6 @@ p { margin: 0; }
 }
   
 
-
-/* This controls font color on tablet view */ 
-
-@media screen and (max-width: 960px) {
-
-	.cta{
-		color:[%FontColorTablet%];
-		border: 1px solid [%FontColorTablet%];
-	}
-	
-	.title { color:[%FontColorTablet%];}
-	.summary{color:[%FontColorTablet%];}
-
-	#content-container{width:50%;}
-	.flex-frame{width:50%;}
-}   
-
- 
 /* media query for mobile by mistake  */
 
 @media (max-width: 727px) {

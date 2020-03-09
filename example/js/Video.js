@@ -22,6 +22,9 @@ class Video {
 	const Rvideo = document.getElementById(data.id);
 	const Container = Rvideo.parentElement;
 
+	var videoOverlay = this.MakePoster("overlay-" + data.id, data.poster);
+	Container.appendChild(videoOverlay);
+
 	var posterElement = this.MakePoster(data.id, data.poster);
 	var posterBG = this.MakePosterBG(data.id, data.poster);
 	var posterPlayBtn = this.MakePlayButtonOverPoster (data.id, data.playbutton);

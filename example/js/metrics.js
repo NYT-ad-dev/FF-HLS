@@ -36,3 +36,5 @@ var eventTracker = function () {
         }          
     };
 }();
+
+// HLSDesktopAd
